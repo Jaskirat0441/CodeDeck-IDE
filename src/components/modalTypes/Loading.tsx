@@ -1,13 +1,7 @@
-import React from 'react'
-// import { AiOutlineLoading3Quarters } from "react-icons/ai"
-
-
-
+import React from "react";
 
 const Loading = () => {
-  return (
-    <div><img  src='/loading.gif' alt="loading.."/></div>
-  )
-}
+  return <div>Loading...</div>;
+};
 
-export default Loading
+export default Loading;

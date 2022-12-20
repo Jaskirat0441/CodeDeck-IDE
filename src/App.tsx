@@ -1,40 +1,36 @@
-import { useState,useContext } from "react";
+import React from "react";
+import ModalProvider from "./context/ModalContext";
+import PlaygroundProvider from "./context/PlaygroundContext";
+import HomeScreen from "./screens/HomeScreen";
+import Playground from "./screens/Playground";
+import GlobalStyles from "./styles/global";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
+import Page404 from "./screens/Page404";
 
-import ModalProvider from './context/ModalContext';
-import PlaygroundProvider from './context/PlaygroundContext';
-import HomeScreen from './screens/HomeScreen';
-import Playground from './screens/Playground';
-import GlobslStyles from "./styles/global";
-import {Route,Routes,Navigate,BrowserRouter} from "react-router-dom";
-import Page from './screens/Error404/Page';
-import { ThemeContext, ThemeProvider } from "styled-components";
-import { DarkModeContext } from "./context/DarkModeContext";
 function App() {
-
-  // const  {mode} = useContext(DarkModeContext)!;
-  // console.log(mode);
-
-
+  // const {theme}= useTheme();
   return (
-    // <ThemeProvider theme={mode}>
+    // <ThemeProvider theme={theme}>
     <PlaygroundProvider>
       <ModalProvider>
-      <GlobslStyles/>
-      {/* <HomeScreen/> */}
-      {/* <Playground/> */}
-      <BrowserRouter>
-      <Routes>
-            <Route path="/" element={<HomeScreen />}/>
-            <Route path="/code/:folderId/:playgroundId" element={<Playground/>}/>
-            <Route path="*" element={<Page/>}/>
+        <GlobalStyles />
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<HomeScreen />} />
 
-      </Routes>
-      </BrowserRouter>
-    </ModalProvider>
+            <Route
+              path='/code/:folderId/:playgroundId'
+              element={<Playground />}
+              />
+
+            {/* For undefined paths - 404 page */}
+            <Route path='*' element={<Page404 />} />
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
     </PlaygroundProvider>
-      // </ThemeProvider>
+              // </ThemeProvider>
   );
-
 }
 
 export default App;

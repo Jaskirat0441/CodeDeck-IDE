@@ -1,7 +1,7 @@
-import React,{useState,useContext} from 'react'
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { BiExport } from "react-icons/bi";
-import { DarkModeContext } from '../../context/DarkModeContext';
+import { DarkModeContext } from "../../context/DarkModeContext";
 
 const Console = styled.div`
   background: white;
@@ -28,9 +28,10 @@ const Header = styled.div`
     gap: 0.4rem;
     font-size: 1rem;
     font-weight: 400;
-    background:transparent;
-    outline:0;
-    border:0;
+    background: transparent;
+    outline: 0;
+    border: 0;
+
     svg {
       font-size: 1.5rem;
     }
@@ -40,18 +41,19 @@ const Header = styled.div`
 const OutputArea = styled.textarea`
   background: #e7e7e7;
   flex-grow: 1;
-  padding-top:0.5rem;
-  padding:0.25rem;
+  padding: 0.25rem;
+  padding-top: 0.5rem;
+  font-size: 1.1rem;
+  font-style: italic;
 `;
+
 interface OutputConsoleProps {
-  currOutput: string;
-  // setCurrInput: (newInput: string) => void;
+  currentOutput: string;
 }
-const OutputConsole :React.FC<OutputConsoleProps>= ({currOutput}) => {
-  // dark mode
-  const { setMode } = useContext(DarkModeContext)!;
+
+const OutputConsole: React.FC<OutputConsoleProps> = ({ currentOutput }) => {
   const { mode } = useContext(DarkModeContext)!;
-  const [darkTheme,setDarkTheme] = useState({});
+  // const [darkTheme,setDarkTheme] = useState({});
   
   let DarkTheme = {
       color: "white",
@@ -61,17 +63,17 @@ const OutputConsole :React.FC<OutputConsoleProps>= ({currOutput}) => {
     }
   let LightTheme = {}
   return (
-    <Console>
-      <Header style={mode=="light"? LightTheme: DarkTheme }>
+   <Console>
+      <Header style={mode==="light"? LightTheme: DarkTheme }>
         Output:
-        <button style={mode=="light"? LightTheme: DarkTheme }>
+        <button style={mode==="light"? LightTheme: DarkTheme }>
           <BiExport />
           Export Output
         </button>
       </Header>
-      <OutputArea value={currOutput} disabled style={mode=="light"? LightTheme: DarkTheme }></OutputArea>
+      <OutputArea value={currentOutput} disabled style={mode=="light"? LightTheme: DarkTheme }></OutputArea>
     </Console>
-  )
-}
+  );
+};
 
-export default OutputConsole
+export default OutputConsole;

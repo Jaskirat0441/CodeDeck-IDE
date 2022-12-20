@@ -1,36 +1,27 @@
-import React, { useState, useContext } from 'react'
-import styled from 'styled-components';
-import Modal from '../../components/Modal';
-import { ModalContext } from '../../context/ModalContext';
-import LeftPane from './LeftPane'
-import Rigthpane from './Rigthpane'
+import React, { useContext, useState } from "react";
+import LeftPane from "./LeftPane";
+import RightPane from "./RightPane";
+import styled from "styled-components";
+import Modal from "../../components/Modal";
+import { ModalContext } from "../../context/ModalContext";
 
 const HomeScreenContainer = styled.div`
-        position:relative;
-        width:100%;
-        height:100vh;
-        `
+  position: relative;
+  width: 100%;
+  height: 100vh;
+`;
 
-// interface RightPaneprops {
-//   title: string;
-//   currLang: string;
-// }
 const HomeScreen = () => {
-  // const [isOpen,setIsOpen] = useState(true);
-
   const ModalFeatures = useContext(ModalContext)!;
-  const isOpen = ModalFeatures?.isOpen;
-
-  // const [mode, setMode] = useState("light");
-
+  const isOpen = ModalFeatures.isOpen;
 
   return (
     <HomeScreenContainer>
       <LeftPane />
-      <Rigthpane  />
-      {isOpen?.value === true ? <Modal /> : <></>}
+      <RightPane />
+      {isOpen.value === true ? <Modal /> : <></>}
     </HomeScreenContainer>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;

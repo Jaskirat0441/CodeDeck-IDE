@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useEffect, useState } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 // themes
 import { duotoneLight, duotoneDark } from "@uiw/codemirror-theme-duotone";
@@ -15,9 +15,7 @@ import { python } from "@codemirror/lang-python";
 // configuration
 import { indentUnit } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
-
 import styled from "styled-components";
-// import { githubDark } from '@uiw/codemirror-theme-github';
 
 const CodeEditorContainer = styled.div<CodeEditorBoxTypes>`
 & > div {
@@ -36,54 +34,61 @@ interface CodeEditorBoxTypes {
   isFullScreen: boolean;
 }
 
-interface CodeEditorProps{
-  currLang:string;
-  currTheme:string;
-  currCode:string;
-  setCurrCode :(newCode :string)=>void;
-  isFullScreen:boolean;
+interface CodeEditorProps {
+  currentLanguage: string;
+  currentTheme: string;
+  currentCode: string;
+  setCurrentCode: (newCode: string) => void;
+  isFullScreen:boolean
 }
-const CodeEditor : React.FC<CodeEditorProps> = ({currLang,currTheme,currCode ,setCurrCode,isFullScreen}) => {
 
-  const [theme, setTheme] = useState<any>(xcodeDark);
+const CodeEditor: React.FC<CodeEditorProps> = ({
+  currentLanguage,
+  currentTheme,
+  currentCode,
+  setCurrentCode,
+  isFullScreen
+}) => {
+  // code editor configuration
+  const [theme, setTheme] = useState<any>(githubDark);
   const [lang, setLang] = useState<any>(python);
 
-  //  chnage languge
-
+  // HANDLE LANGUAGE CHANGE
   useEffect(() => {
-     if(currLang === "c++") setLang(cpp);
-     if(currLang === "java") setLang(java);
-     if(currLang === "javascript") setLang(javascript);
-     if(currLang === "python") setLang(python);
-  }, [currLang])
+    if (currentLanguage === "c++") setLang(cpp);
+    if (currentLanguage === "python") setLang(python);
+    if (currentLanguage === "java") setLang(java);
+    if (currentLanguage === "javascript") setLang(javascript);
+  }, [currentLanguage]);
 
-  // change theme
-
+  // HANDLE THEME CHANGE
   useEffect(() => {
-    if(currTheme === "duotoneDark") setTheme(duotoneDark);
-    if(currTheme === "duotoneLight") setTheme(duotoneLight);
-    if(currTheme === "xcodeLight") setTheme(xcodeLight);
-    if(currTheme === "xcodeDark") setTheme(xcodeDark);
-    if(currTheme === "okaidia") setTheme(okaidia);
-    if(currTheme === "githubDark") setTheme(githubDark);
-    if(currTheme === "githubLight") setTheme(githubLight);
-    if(currTheme === "darcula") setTheme(darcula);
-    if(currTheme === "bespin") setTheme(bespin);
- }, [currTheme])
+    if (currentTheme === "duotoneLight") setTheme(duotoneLight);
+    if (currentTheme === "duotoneDark") setTheme(duotoneDark);
+    if (currentTheme === "xcodeLight") setTheme(xcodeLight);
+    if (currentTheme === "xcodeDark") setTheme(xcodeDark);
+    if (currentTheme === "okaidia") setTheme(okaidia);
+    if (currentTheme === "githubLight") setTheme(githubLight);
+    if (currentTheme === "githubDark") setTheme(githubDark);
+    if (currentTheme === "darcula") setTheme(darcula);
+    if (currentTheme === "bespin") setTheme(bespin);
+  }, [currentTheme]);
 
-  
   return (
     <CodeEditorContainer isFullScreen = {isFullScreen}>
-      <CodeMirror theme={theme} 
-      height="100%"
-      value={currCode}
-      onChange={(value:string,e:any)=>{
-        setCurrCode(value);
-      }}
-      extensions={[lang,
-         indentUnit.of("   "),
-        EditorState.tabSize.of(8),
-        EditorState.changeFilter.of(() => true),]}
+      <CodeMirror
+        theme={theme}
+        value={currentCode}
+        onChange={(value: string) => {
+          setCurrentCode(value);
+        }}
+        height='100%'
+        extensions={[
+          lang,
+          indentUnit.of("        "),
+          EditorState.tabSize.of(8),
+          EditorState.changeFilter.of(() => true),
+        ]}
         basicSetup={{
           lineNumbers: true,
           highlightActiveLineGutter: true,
@@ -111,7 +116,7 @@ const CodeEditor : React.FC<CodeEditorProps> = ({currLang,currTheme,currCode ,se
         }}
       />
     </CodeEditorContainer>
-  )
-}
+  );
+};
 
 export default CodeEditor;

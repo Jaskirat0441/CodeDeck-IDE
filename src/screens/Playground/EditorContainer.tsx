@@ -1,23 +1,22 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import { BiEditAlt, BiExport, BiFullscreen, BiImport } from "react-icons/bi";
 import styled from "styled-components";
 import CodeEditor from "./CodeEditor";
 import Select from "react-select";
 import { ModalContext } from "../../context/ModalContext";
-import { langMap } from "../../context/PlaygroundContext";
-import { DarkModeContext } from "../../context/DarkModeContext";
+import { languageMap } from "../../context/PlaygroundContext";
 import { FullScreen, useFullScreenHandle } from "react-full-screen";
+import { DarkModeContext } from "../../context/DarkModeContext";
 
 const StyledEditorContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-
-
 const UpperToolbar = styled.div`
   background: white;
   height: 4rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,9 +27,11 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
   h3 {
     font-size: 1.3rem;
   }
+
   button {
     background: transparent;
     font-size: 1.3rem;
@@ -42,24 +43,30 @@ const Title = styled.div`
 const LowerToolbar = styled.div`
   background: white;
   height: 4rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
 
-  button,label   {
+  button,
+  label {
     background: transparent;
     outline: 0;
     border: 0;
     font-size: 1.15rem;
+    cursor: pointer;
+
     display: flex;
     align-items: center;
     gap: 0.75rem;
+
     svg {
       font-size: 1.4rem;
     }
   }
 `;
+
 const ButtonGroup = styled.div`
   display: flex;
   align-items: center;
@@ -75,41 +82,56 @@ const RunCode = styled.button`
 `;
 
 const SaveCode = styled.button`
-padding: 0.4rem 1rem;
-background-color: #0097d7 !important;
-color: white;
-font-weight: 700;
-border-radius: 2rem;
-border: 0;
+  padding: 0.4rem 1rem;
+  background-color: #0097d7 !important;
+  color: white;
+  font-weight: 700;
+  border-radius: 2rem;
+  border: 0;
 `;
-
 
 const SelectBars = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
   & > div:nth-of-type(1) {
     width: 10rem;
   }
+
   & > div:nth-of-type(2) {
     width: 11rem;
   }
 `;
-interface EditorContProps {
-  title: string;
-  currLang: string;
-  currCode: string;
-  setCurrCode : (newCode :string) => void;
-  setCurrLang : (newLang:string) => void;
-  folderId:string;
-  cardId:string;
-  saveCode : ()=>void;
-  runCode : ()=>void;
-}
-const EditorContainer: React.FC<EditorContProps> = ({ title, currLang, currCode ,setCurrCode,setCurrLang,cardId,folderId,saveCode,runCode}) => {
 
-  const {openModal} = useContext(ModalContext)!;
+interface EditorContainerProps {
+  title: string;
+  currentLanguage: string;
+  currentCode: string;
+  setCurrentLanguage: (newLang: string) => void;
+  setCurrentCode: (newCode: string) => void;
+  folderId: string;
+  cardId: string;
+  saveCode: () => void;
+  runCode: () => void;
+}
+
+const EditorContainer: React.FC<EditorContainerProps> = ({
+  title,
+  currentLanguage,
+  currentCode,
+  setCurrentLanguage,
+  setCurrentCode,
+  folderId,
+  cardId,
+  saveCode,
+  runCode,
+}) => {
+  // import openModal function
+  const { openModal } = useContext(ModalContext)!;
   const handle = useFullScreenHandle();
+
+
   const languageOptions = [
     { value: "c++", label: "C++" },
     { value: "java", label: "Java" },
@@ -128,44 +150,49 @@ const EditorContainer: React.FC<EditorContProps> = ({ title, currLang, currCode 
     { value: "bespin", label: "bespin" },
   ];
 
-
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     for (let i = 0; i < languageOptions.length; i++) {
-      if (languageOptions[i].value === currLang) {
+      if (languageOptions[i].value === currentLanguage)
         return languageOptions[i];
-      }
     }
     return languageOptions[0];
-
   });
 
-  const [selectedTheme, setSelectedTheme] = useState({ value: "duotoneLight", label: "duotoneLight" });
+  const [selectedTheme, setSelectedTheme] = useState({
+    value: "githubDark",
+    label: "githubDark",
+  });
 
-  const handleLanguage = (selectedOption: any) => {
+  const handleChangeLanguage = (selectedOption: any) => {
     setSelectedLanguage(selectedOption);
-    setCurrLang(selectedOption.value);
-    setCurrCode(langMap[selectedOption.value].defaultCode)
+    setCurrentLanguage(selectedOption.value);
+    setCurrentCode(languageMap[selectedOption.value].defaultCode);
+  };
 
-  }
-  const handleTheme = (selectedOption: any) => {
+  const handleChangeTheme = (selectedOption: any) => {
     setSelectedTheme(selectedOption);
-  }
+  };
 
-  const getFile =(e:any)=>{
-
+  const getFile = (e: any) => {
     const input = e.target;
+
+    // input = {
+    //   files: ["file1.txt", "file2.txt", ...]
+    // }
+
     if ("files" in input && input.files.length > 0) {
       placeFileContent(input.files[0]);
     }
+  };
 
-  }
   const placeFileContent = (file: any) => {
     readFileContent(file)
       .then((content) => {
-        setCurrCode(content as string);
+        setCurrentCode(content as string);
       })
       .catch((error) => console.log(error));
   };
+
   function readFileContent(file: any) {
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -175,10 +202,9 @@ const EditorContainer: React.FC<EditorContProps> = ({ title, currLang, currCode 
     });
   }
 
-  //  export code
-  
+  // export code
   const handleExport = () =>{
-    const blob = new Blob([currCode], { type: "text/plain" });
+    const blob = new Blob([currentCode], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement("a");
@@ -188,71 +214,80 @@ const EditorContainer: React.FC<EditorContProps> = ({ title, currLang, currCode 
     
 
   }
-  //  dark mode theme
-  const { setMode } = useContext(DarkModeContext)!;
-  const { mode } = useContext(DarkModeContext)!;
-  const [darkTheme,setDarkTheme] = useState({});
-  
-  let DarkTheme = {
-      color: "white",
-      backgroundColor: "rgb(47 47 47)",
-      boxShadow: "0px 0px 36px -25px rgb(255 255 255 / 60%)",
-      
-    }
-  let LightTheme = {}
+   //  dark mode theme
+   const { setMode } = useContext(DarkModeContext)!;
+   const { mode } = useContext(DarkModeContext)!;
+   const [darkTheme,setDarkTheme] = useState({});
+   
+   let DarkTheme = {
+       color: "white",
+       backgroundColor: "rgb(47 47 47)",
+       boxShadow: "0px 0px 36px -25px rgb(255 255 255 / 60%)",
+       
+     }
+   let LightTheme = {}
+
   return (
     <StyledEditorContainer>
-
-      <UpperToolbar style={mode=="light"? LightTheme: DarkTheme }>
-        <Title >
+      {/* Upper Toolbar Begins */}
+      <UpperToolbar  style={mode==="light"? LightTheme: DarkTheme }>
+        <Title>
           <h3>{title}</h3>
-          <button onClick={()=>{
-            openModal({
-              value:true,
-              type:"1",
-              identifier:{
-                folderId:folderId,
-                cardId:cardId,
-
-              }
-            })
-          }}>
+          <button
+            onClick={() => {
+              // open a modal
+              // to edit card title
+              openModal({
+                value: true,
+                type: "1",
+                identifer: {
+                  folderId: folderId,
+                  cardId: cardId,
+                },
+              });
+            }}
+          >
             <BiEditAlt />
           </button>
         </Title>
-        {/* dropdown */}
         <SelectBars>
-        <SaveCode onClick={ ()=>{
-          saveCode();
-        }}>Save Code</SaveCode>
-
+          <SaveCode
+            onClick={() => {
+              saveCode();
+            }}
+          >
+            Save Code
+          </SaveCode>
           <Select
             value={selectedLanguage}
             options={languageOptions}
-            onChange={handleLanguage}
+            onChange={handleChangeLanguage}
           />
           <Select
             value={selectedTheme}
             options={themeOptions}
-            onChange={handleTheme}
+            onChange={handleChangeTheme}
           />
         </SelectBars>
-
       </UpperToolbar>
+      {/* Upper Toolbar Ends */}
       <FullScreen handle={handle}>
+      {/* Code Editor Begins */}
+      <CodeEditor
+        currentLanguage={selectedLanguage.value}
+        currentTheme={selectedTheme.value}
+        currentCode={currentCode}
+        setCurrentCode={setCurrentCode}
+        isFullScreen={handle.active}
 
-      <CodeEditor currLang={selectedLanguage.value} currTheme={selectedTheme.value} 
-       currCode={currCode}
-       setCurrCode ={setCurrCode}
-       isFullScreen={handle.active}
-       
-       />
-       </FullScreen>
+      />
+      </FullScreen>
+      {/* Code Editor Ends */}
 
-      {/* lower tool bar */}
-      <LowerToolbar  style={mode=="light"? LightTheme: DarkTheme }>
+      {/* Lower Toolbar Begins */}
+      <LowerToolbar  style={mode==="light"? LightTheme: DarkTheme }>
         <ButtonGroup>
-          <button  onClick={handle.enter} style={mode=="light"? LightTheme: DarkTheme }>
+          <button  onClick={handle.enter} style={mode==="light"? LightTheme: DarkTheme } >
             <BiFullscreen />
             Full Screen
           </button>
@@ -262,17 +297,22 @@ const EditorContainer: React.FC<EditorContProps> = ({ title, currLang, currCode 
               }}/>
             <BiImport /> Import Code
           </label>
-          <button onClick={handleExport}  style={mode=="light"? LightTheme: DarkTheme }>
+          <button onClick={handleExport}  style={mode==="light"? LightTheme: DarkTheme }  >
             <BiExport />
             Export Code
           </button >
         </ButtonGroup>
-        <RunCode onClick={()=>{
-          runCode();
-        }}>Run Code</RunCode>
+        <RunCode
+          onClick={() => {
+            runCode();
+          }}
+        >
+          Run Code
+        </RunCode>
       </LowerToolbar>
+      {/* Lower Toolbar Ends */}
     </StyledEditorContainer>
-  )
-}
+  );
+};
 
-export default EditorContainer
+export default EditorContainer;

@@ -1,7 +1,7 @@
-import React,{useState,useContext} from 'react'
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { BiImport } from "react-icons/bi";
-import { DarkModeContext } from '../../context/DarkModeContext';
+import { DarkModeContext } from "../../context/DarkModeContext";
 
 const Console = styled.div`
   background: white;
@@ -28,9 +28,10 @@ const Header = styled.div`
     gap: 0.4rem;
     font-size: 1rem;
     font-weight: 400;
-    background:transparent;
-    outline:0;
-    border:0;
+    background: transparent;
+    outline: 0;
+    border: 0;
+
     svg {
       font-size: 1.5rem;
     }
@@ -43,30 +44,30 @@ const TextArea = styled.textarea`
   border: 0;
   outline: 0;
   font-size: 1.1rem;
-  padding-top:0.5rem
-  `;
+  padding: 0.25rem;
+  padding-top: 0.5rem;
+`;
 
-  interface InputConsoleProps {
-    currInput: string;
-    setCurrInput: (newInput: string) => void;
-  }
-  const InputConsole: React.FC<InputConsoleProps> = ({
-    currInput,
-    setCurrInput,
-  })=>{
+interface InputConsoleProps {
+  currentInput: string;
+  setCurrentInput: (newInput: string) => void;
+}
 
-    // dark mode
-    const { setMode } = useContext(DarkModeContext)!;
-    const { mode } = useContext(DarkModeContext)!;
-    const [darkTheme,setDarkTheme] = useState({});
-    
-    let DarkTheme = {
-        color: "white",
-        backgroundColor: "rgb(47 47 47)",
-        boxShadow: "0px 0px 36px -25px rgb(255 255 255 / 60%)",
-        
-      }
-    let LightTheme = {}
+const InputConsole: React.FC<InputConsoleProps> = ({
+  currentInput,
+  setCurrentInput,
+}) => {
+  const { setMode } = useContext(DarkModeContext)!;
+  const { mode } = useContext(DarkModeContext)!;
+  const [darkTheme,setDarkTheme] = useState({});
+  
+  let DarkTheme = {
+      color: "white",
+      backgroundColor: "rgb(47 47 47)",
+      boxShadow: "0px 0px 36px -25px rgb(255 255 255 / 60%)",
+      
+    }
+  let LightTheme = {}
   return (
     <Console style={mode=="light"? LightTheme: DarkTheme }>
     <Header style={mode=="light"? LightTheme: DarkTheme }>
@@ -76,9 +77,9 @@ const TextArea = styled.textarea`
         Import Input
       </button>
     </Header>
-    <TextArea value={currInput} onChange={(e)=> {setCurrInput(e.target.value);}} style={mode=="light"? LightTheme: DarkTheme }></TextArea>
+    <TextArea value={currentInput} onChange={(e)=> {setCurrentInput(e.target.value);}} style={mode=="light"? LightTheme: DarkTheme }></TextArea>
   </Console>
-  )
-}
+  );
+};
 
-export default InputConsole
+export default InputConsole;

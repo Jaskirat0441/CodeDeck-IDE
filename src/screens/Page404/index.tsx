@@ -17,9 +17,9 @@ const ContentContainer = styled.div`
   }
 `;
 
-const Page = () => {
-
-    const navigate = useNavigate();
+const Page404 = () => {
+  // initialize useNavigate hook
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -30,12 +30,12 @@ const Page = () => {
 
   return (
     <PageContainer>
-    <ContentContainer>
-      <h1>Oops, Page not found.</h1>
-      <p>Redirecting to Home!</p>
-    </ContentContainer>
-  </PageContainer>
-  )
-}
+      <ContentContainer>
+        <h1>Oops, Page not found.</h1>
+        <p>Redirecting to Home!</p>
+      </ContentContainer>
+    </PageContainer>
+  );
+};
 
-export default Page
+export default Page404;
