@@ -67,11 +67,16 @@ export const languageMap: {
   },
   python: {
     id: 71,
-    defaultCode: "# your python code here",
+    defaultCode: `print("Hello World!")`,
   },
   javascript: {
     id: 63,
-    defaultCode: "// your javascript code here",
+    defaultCode: " /*" +
+    "\n" +
+    "Use INPUT variable to get stdin.\n" +
+    "  Try console.log(INPUT);\n" +
+    " */\n" +
+    "console.log('Hello World');",
   },
   java: {
     id: 62,
